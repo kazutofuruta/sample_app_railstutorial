@@ -1,0 +1,10 @@
+<h1>Sample App</h1>
+
+<p>Hi <%= @user.name %>,</p>
+
+<p>
+Welcome to the Sample App! Click on the link below to activate your account:
+</p>
+
+<%= link_to "Activate", edit_account_activation_url(@user.activation_token,email: @user.email) %>
+<!-- 送信maileにaccount_activationsコントローラーのeditアクションのリンクを貼る（リンクの中に有効トークンとメールアドレスを入れ込む） -->

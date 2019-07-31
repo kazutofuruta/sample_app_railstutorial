@@ -13,11 +13,15 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
 		assert_template 'users/index'
 		assert_select 'h1','All User'
 		User.paginate(page: 1).each do |user|
-			assert_select 'a[href=?]',user_path(user),text: user.name
-			unless user == @admin
-				assert_select 'a[href=?]',user_path(user),text: "delete"
-			end
-		end
+				if user.activated?  ##userのactivated: trueのユーザーのみ表示
+						assert_select 'a[href=?]',user_path(user),text: user.name
+						unless user == @admin
+							assert_select 'a[href=?]',user_path(user),text: "delete"
+						end
+				else
+					assert_select 'a[href=?]',user_path(user),text: user.name, count: 0
+				end
+		    end
 		assert_difference 'User.count', -1 do
 			delete user_path(@not_admin)
 		end
